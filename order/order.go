@@ -1,6 +1,7 @@
 package order
 
 import (
+	"fmt"
 	"log"
 	"restaurant-app/cart"
 	"restaurant-app/item"
@@ -38,9 +39,20 @@ func (oa *OrderAuth) CalculateTotalPrices(cart []cart.Cart) float64 {
 }
 
 func (oa *OrderAuth) UpdateStock(oi []OrderItem) error {
+	item := item.Item{}
+	tx := oa.DB.Begin()
 	for _, v := range oi {
-		oa.DB.Where("id = ?", v.ItemId).Update("stock", v.Quantity)
+		tx.Where("id = ?", v.ItemId).First(&item)
+		item.Stock -= v.Quantity
+		tx.Save(&item)
+		fmt.Println(item)
 	}
+	err := tx.Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	tx.Commit()
 	return nil
 }
 
@@ -74,6 +86,11 @@ func (oa *OrderAuth) CreateOrder(cart []cart.Cart) error {
 		log.Println("Error creating orderitems ", err)
 		return err
 	}
+
 	tx.Commit()
+	err = oa.UpdateStock(ordertItems)
+	if err != nil {
+		log.Println("Error updating stock :", err)
+	}
 	return nil
 }
