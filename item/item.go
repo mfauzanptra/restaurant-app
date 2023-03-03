@@ -10,6 +10,7 @@ import (
 type Item struct {
 	Id    uint `gorm:"PRIMARY_KEY;AUTO_INCREMENT;NOT NULL"`
 	Name  string
+	Stock int
 	Price float64
 }
 
