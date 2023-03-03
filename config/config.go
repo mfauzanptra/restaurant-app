@@ -3,6 +3,8 @@ package config
 import (
 	"fmt"
 	"os"
+	"restaurant-app/item"
+	"restaurant-app/order"
 	"strconv"
 
 	"github.com/joho/godotenv"
@@ -47,4 +49,10 @@ func ConnectSQL(c Config) *gorm.DB {
 	}
 
 	return db
+}
+
+func Migrate(db *gorm.DB) {
+	db.AutoMigrate(item.Item{})
+	db.AutoMigrate(order.Order{})
+	db.AutoMigrate(order.OrderItem{})
 }
