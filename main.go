@@ -27,8 +27,8 @@ func main() {
 		fmt.Println("1. Tambah Menu Makanan")
 		fmt.Println("2. Lihat Menu Makanan")
 		fmt.Println("3. Buat Pesanan")
-		fmt.Println("4. Laporan Penjualan")
-		fmt.Println("5. Laporan Stock Item Harian")
+		fmt.Println("4. Laporan Penghasilan")
+		fmt.Println("5. Laporan Stock Item")
 		fmt.Println("9. Keluar")
 		fmt.Print("Masukkan menu: ")
 		fmt.Scanln(&option)
@@ -134,6 +134,30 @@ func main() {
 							}
 						}
 					}
+				}
+			}
+		case 4:
+			reportMenu := 0
+			for reportMenu != 9 {
+				fmt.Println("\nLaporan Penghasilan")
+				fmt.Println("1. Laporan Mingguan")
+				fmt.Println("2. Laporan Bulanan")
+				fmt.Println("9. Kembali")
+				fmt.Print("Masukkan pilihan: ")
+				fmt.Scanln(&reportMenu)
+
+				tmp := 0
+				switch reportMenu {
+				case 1:
+					fmt.Print("Masukkan minggu: ")
+					fmt.Scanln(&tmp)
+					path := orderAuth.CreateReport(tmp, 0)
+					fmt.Println("File laporan disimpan di: ", path)
+				case 2:
+					fmt.Print("Masukkan bulan: ")
+					fmt.Scanln(&tmp)
+					path := orderAuth.CreateReport(0, tmp)
+					fmt.Println("File laporan disimpan di: ", path)
 				}
 			}
 		case 5:
