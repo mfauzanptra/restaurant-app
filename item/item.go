@@ -1,6 +1,9 @@
 package item
 
 import (
+	"errors"
+	"log"
+
 	"gorm.io/gorm"
 )
 
@@ -14,13 +17,23 @@ type ItemAuth struct {
 	DB *gorm.DB
 }
 
-// func (ia *ItemAuth) CheckDuplicateItem(name string) error {
-// 	existed := 0
-// 	ia.db.Raw("SELECT COUNT(*) FROM items i WHERE p.product_name = ? AND user_id = ?", newProduct.ProductName, userId).Scan(&existed)
-// 	if existed >= 1 {
-// 		return errors.New("duplicated product on name")
-// 	}
-// }
-// func (ia *ItemAuth) AddItem(name string, price float64) error {
-
-// }
+func (ia *ItemAuth) CheckDuplicateItem(name string) error {
+	existed := 0
+	ia.DB.Raw("SELECT COUNT(*) FROM items i WHERE i.name = ?", name).Scan(&existed)
+	if existed >= 1 {
+		return errors.New("duplicated item")
+	}
+	return nil
+}
+func (ia *ItemAuth) AddItem(newItem Item) error {
+	err := ia.CheckDuplicateItem(newItem.Name)
+	if err != nil {
+		return err
+	}
+	err = ia.DB.Create(&newItem).Error
+	if err != nil {
+		log.Println("error creating new item: ", err)
+		return err
+	}
+	return nil
+}
