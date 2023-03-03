@@ -9,4 +9,4 @@ DBPORT="database port"
 DBNAME="database name"
 ```
 
-Also create empty folder named "receipt" and "stock" for report pdf file.
+Also create empty folder named "report", "receipt" and "stock" for report pdf file.
