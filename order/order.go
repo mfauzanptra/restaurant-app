@@ -1,7 +1,6 @@
 package order
 
 import (
-	"fmt"
 	"log"
 	"restaurant-app/cart"
 	"restaurant-app/item"
@@ -45,7 +44,6 @@ func (oa *OrderAuth) UpdateStock(oi []OrderItem) error {
 		tx.Where("id = ?", v.ItemId).First(&item)
 		item.Stock -= v.Quantity
 		tx.Save(&item)
-		fmt.Println(item)
 	}
 	err := tx.Error
 	if err != nil {
@@ -92,5 +90,6 @@ func (oa *OrderAuth) CreateOrder(cart []cart.Cart) error {
 	if err != nil {
 		log.Println("Error updating stock :", err)
 	}
+	oa.CreateReceipt(order, ordertItems)
 	return nil
 }
