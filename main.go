@@ -28,6 +28,7 @@ func main() {
 		fmt.Println("2. Lihat Menu Makanan")
 		fmt.Println("3. Buat Pesanan")
 		fmt.Println("4. Laporan Penjualan")
+		fmt.Println("5. Laporan Stock Item Harian")
 		fmt.Println("9. Keluar")
 		fmt.Print("Masukkan menu: ")
 		fmt.Scanln(&option)
@@ -129,11 +130,14 @@ func main() {
 								fmt.Println("gagal membuat pesanan")
 							} else {
 								fmt.Println("sukses membuat pesanan")
+								uCart = []cart.Cart{}
 							}
 						}
 					}
 				}
 			}
+		case 5:
+			fmt.Println("\nLaporan stock sukses dibuat di ", itemAuth.CreateStockReport())
 		}
 	}
 }
