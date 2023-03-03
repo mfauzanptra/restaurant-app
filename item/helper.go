@@ -28,14 +28,12 @@ func (ia *ItemAuth) CreateStockReport() string {
 	pdf.CellFormat(105, 5, "Nama Item", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(30, 5, "Stok", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(50, 5, "Harga", "1", 1, "C", false, 0, "")
-	// pdf.CellFormat(40, 5, "Total Harga", "1", 1, "C", false, 0, "")
 
 	pdf.SetFont("Arial", "", 10)
 	for _, item := range items {
 		pdf.CellFormat(105, 5, item.Name, "1", 0, "L", false, 0, "")
 		pdf.CellFormat(30, 5, fmt.Sprintf("%d", item.Stock), "1", 0, "C", false, 0, "")
 		pdf.CellFormat(50, 5, fmt.Sprintf("Rp. %s", humanize.Commaf(item.Price)+",00"), "1", 1, "C", false, 0, "")
-		// pdf.CellFormat(40, 5, "Total Harga", "1", 1, "C", false, 0, "")
 	}
 
 	pdf.OutputFileAndClose("stock/" + fmt.Sprint(time.Now().Format("2006-01-02")) + ".pdf")
