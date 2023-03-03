@@ -1,7 +1,8 @@
 # restaurant-app
 
 Set your local.env first with this format (without quotation mark)
-```DBUSER="database username"
+```
+DBUSER="database username"
 DBPASS="database password"
 DBHOST="database host"
 DBPORT="database port"
