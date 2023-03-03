@@ -104,6 +104,34 @@ func main() {
 						fmt.Println("  Harga: ", tmp.Price)
 					}
 					fmt.Printf("Total Harga: %.2f\n", orderAuth.CalculateTotalPrices(uCart))
+				case 3:
+					if len(uCart) == 0 {
+						fmt.Println("Daftar pesananan masih kosong")
+					} else {
+						fmt.Println("\nDaftar Pesanan")
+						for _, item := range uCart {
+							tmp := itemAuth.GetItem(item.ItemId)
+							fmt.Println("- ID: ", tmp.Id)
+							fmt.Println("  Nama Item: ", tmp.Name)
+							fmt.Println("  Jumlah: ", item.Qty)
+							fmt.Println("  Harga: ", tmp.Price)
+						}
+						fmt.Printf("Total Harga: %.2f\n", orderAuth.CalculateTotalPrices(uCart))
+
+						fmt.Print("Pesanan sudah sesuai? (y/n): ")
+						answer := ""
+						fmt.Scanln(&answer)
+						if answer == "n" {
+							continue
+						} else {
+							err := orderAuth.CreateOrder(uCart)
+							if err != nil {
+								fmt.Println("gagal membuat pesanan")
+							} else {
+								fmt.Println("sukses membuat pesanan")
+							}
+						}
+					}
 				}
 			}
 		}
