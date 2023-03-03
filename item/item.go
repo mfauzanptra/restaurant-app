@@ -38,6 +38,15 @@ func (ia *ItemAuth) AddItem(newItem Item) error {
 	}
 	return nil
 }
+func (ia *ItemAuth) GetItem(id uint) Item {
+	item := Item{Id: id}
+	err := ia.DB.First(&item).Error
+	if err != nil {
+		log.Println("error getting item: ", err)
+		return Item{}
+	}
+	return item
+}
 func (ia *ItemAuth) GetItems() ([]Item, error) {
 	items := []Item{}
 	err := ia.DB.Raw("SELECT * FROM items").Scan(&items).Error
