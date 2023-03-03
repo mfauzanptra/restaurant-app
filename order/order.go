@@ -2,13 +2,16 @@ package order
 
 import (
 	"log"
+	"restaurant-app/cart"
 	"restaurant-app/item"
+	"time"
 
 	"gorm.io/gorm"
 )
 
 type Order struct {
-	gorm.Model
+	ID         uint
+	CreatedAt  time.Time
 	TotalPrice float64
 }
 
@@ -20,16 +23,11 @@ type OrderItem struct {
 	Quantity int
 }
 
-type Cart struct {
-	ItemId uint
-	Qty    int
-}
-
 type OrderAuth struct {
 	DB *gorm.DB
 }
 
-func (oa *OrderAuth) CalculateTotalPrices(cart []Cart) float64 {
+func (oa *OrderAuth) CalculateTotalPrices(cart []cart.Cart) float64 {
 	totalPrice := 0.0
 	for _, v := range cart {
 		price := 0.0
@@ -39,7 +37,14 @@ func (oa *OrderAuth) CalculateTotalPrices(cart []Cart) float64 {
 	return totalPrice
 }
 
-func (oa *OrderAuth) CreateOrder(cart []Cart) error {
+func (oa *OrderAuth) UpdateStock(oi []OrderItem) error {
+	for _, v := range oi {
+		oa.DB.Where("id = ?", v.ItemId).Update("stock", v.Quantity)
+	}
+	return nil
+}
+
+func (oa *OrderAuth) CreateOrder(cart []cart.Cart) error {
 	order := Order{}
 	ordertItems := []OrderItem{}
 
